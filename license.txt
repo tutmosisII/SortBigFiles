@@ -1,0 +1,8 @@
+<#if licenseFirst??>
+${licenseFirst}
+</#if>
+${licensePrefix}Apache 2.0
+${licensePrefix}Universidad El Bosque ${licensePrefix}
+<#if licenseLast??>
+${licenseLast}
+</#if>
