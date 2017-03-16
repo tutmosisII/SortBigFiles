@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringBufferInputStream;
 import java.io.StringReader;
+import java.nio.file.Files;
+import org.testng.Assert;
 import static org.testng.Assert.*;
 import org.testng.annotations.Test;
 
@@ -23,6 +25,7 @@ public class SorterBigFileTemplateImplementationTesst {
     String linesToSort[];
     
     public SorterBigFileTemplateImplementationTesst() {
+        //edad,documento,nombre,tipo_doc,tipo_sangre
         String linesToSort[]={
             "3,34291072748,LKUQU YlghdKdjrkMtlADzRzxDIJkJLWuHNpVLBd ENWOfgBAs,cc,O-",
             "76,853839744348,DpvkaHTMD tqFpcgsUKfSymYZMqbQjTsA DBWxoAMIRrX ypOj,ti,B-",
@@ -65,5 +68,26 @@ public class SorterBigFileTemplateImplementationTesst {
         assertEquals(lines[1], linesToSort[1]);
     }
     
+    @Test
+    public void saveToNewFile(){
+        String dir = System.getProperty("user.dir");
+        File test_txt=new File(dir+"/lines2order.txt");
+        File out_dir=new File(dir+"/out");
+        SorterBigFileTemplateImpl sbfti=new SorterBigFileTemplateImpl(test_txt,2,out_dir);
+        sbfti.setBufferReader(getBufferedReader());
+        sbfti.saveToNewFile(sbfti.getNextLines(), 0);      
+    }
+    
+    @Test
+    public void particionarArchivos() throws IOException{
+        String dir = System.getProperty("user.dir");
+        File test_txt=new File(dir+"/entrada.txt");
+        File out_files=new File(dir+"/out");
+        SorterBigFileTemplateImpl sbfti=new SorterBigFileTemplateImpl(test_txt,2,out_files);
+        sbfti.setBufferReader(getBufferedReader());
+        sbfti.breakFileInChunksAndSortIt(new EdadComparator());
+        long totalArchivos=Files.list(out_files.toPath()).count();
+        Assert.assertEquals(totalArchivos, 4);
+    }
    
 }
