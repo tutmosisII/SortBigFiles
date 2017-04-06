@@ -5,6 +5,7 @@
 package co.edu.uelbosque.essatueb.sortbigfiles;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -76,7 +77,7 @@ public abstract class SorterBigFileTemplate {
      */
     public abstract void saveToNewFile(String[] lines,int fileNumber);
 
-    public File mergeTempSortedFiles(Comparator c){
+    public File mergeTempSortedFiles(Comparator c) throws IOException{
           Queue<File> filesToOrder=getFilesToOrder();
           while(filesToOrder.size()>1){
               File archivo1=filesToOrder.poll();
@@ -89,5 +90,5 @@ public abstract class SorterBigFileTemplate {
 
     protected abstract File mergeFiles(File file1, File file2);
 
-    protected abstract Queue<File> getFilesToOrder();
+    protected abstract Queue<File> getFilesToOrder() throws IOException;
 }

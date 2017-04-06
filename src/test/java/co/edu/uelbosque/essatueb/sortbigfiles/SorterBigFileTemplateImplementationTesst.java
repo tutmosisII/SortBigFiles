@@ -12,6 +12,8 @@ import java.io.InputStreamReader;
 import java.io.StringBufferInputStream;
 import java.io.StringReader;
 import java.nio.file.Files;
+import java.util.Queue;
+
 import org.testng.Assert;
 import static org.testng.Assert.*;
 import org.testng.annotations.Test;
@@ -88,6 +90,18 @@ public class SorterBigFileTemplateImplementationTesst {
         sbfti.breakFileInChunksAndSortIt(new EdadComparator());
         long totalArchivos=Files.list(out_files.toPath()).count();
         Assert.assertEquals(totalArchivos, 4);
+    }
+    
+    @Test
+    public void returnListOfFilesToOrder() throws IOException{
+    	String dir = System.getProperty("user.dir");
+        File test_txt=new File(dir+"/entrada.txt");
+        File out_files=new File(dir+"/out");
+        SorterBigFileTemplateImpl sbfti=new SorterBigFileTemplateImpl(test_txt,2,out_files);
+        sbfti.setBufferReader(getBufferedReader());
+        sbfti.breakFileInChunksAndSortIt(new EdadComparator());
+        Queue<File> pila=sbfti.getFilesToOrder();
+        Assert.assertEquals(pila.size(),4);
     }
    
 }

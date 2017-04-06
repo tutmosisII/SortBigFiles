@@ -8,11 +8,17 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Queue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 /**
  *
@@ -77,9 +83,22 @@ public class SorterBigFileTemplateImpl extends SorterBigFileTemplate{
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
+    /**
+     * Retorna una pila con los archivos a procesar.
+     * 
+     * @throws IOException 
+     */
     @Override
-    protected Queue<File> getFilesToOrder() {
-        throw new UnsupportedOperationException("Not implemented yet");
+    protected Queue<File> getFilesToOrder() throws IOException {
+    	Queue pila=new LinkedList<>();
+    	Stream<Path> paths=Files.list(this.outPutDir.toPath());
+    	Iterator<Path> i=paths.iterator();
+    	while(i.hasNext()){
+    		Path tmp=i.next();
+    		File f=tmp.toFile();
+    		pila.add(f);
+    	}
+    	return pila;
     }
 
     BufferedReader br;
